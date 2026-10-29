@@ -1,0 +1,20 @@
+{
+  "name": "round-table",
+  "version": "0.1.0",
+  "description": "Agent presets for a round-table working group in DeepSeek Harness.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "dsh": ">=0.2.1-rc.2"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": [
+        "./presets/arthur.patch.yml"
+      ]
+    }
+  }
+}
