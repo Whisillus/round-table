@@ -6,14 +6,16 @@
 # configured yet; it returns once specialist presets exist. `tool-schedule` is
 # kept because it costs no standing prompt section and covers long-running jobs.
 #
-# `dsh-tool-subagent` defaults to `perceval` and allows `perceval` or `arthur`,
-# so a delegation is read-only research unless the model explicitly asks for a
-# full-capability child. `agentPreset` must appear in `allowedAgentPresets`, and
-# every allowed id is resolved while this preset mounts — so the perceval patch
-# is ordered before this one in `dsh.bundle.patch`, and removing perceval breaks
-# Arthur's mount rather than degrading it. Self-reference is safe because the
-# registry publishes a definition's record before activating it. `subagent_fork`
-# accepts no preset selection; it inherits this preset and the conversation.
+# `dsh-tool-subagent` defaults to `arthur` and allows `arthur`, `perceval`, or
+# `bedivere`. An unspecified delegation is therefore a context-free child with the
+# full tool surface: it can write, so the persona's rule that the task description
+# must state the authorized changes carries real weight. `agentPreset` must appear
+# in `allowedAgentPresets`, and every allowed id is resolved while this preset
+# mounts — so the perceval and bedivere patches are ordered before this one in
+# `dsh.bundle.patch`, and removing either breaks Arthur's mount rather than
+# degrading it. Self-reference is safe because the registry publishes a
+# definition's record before activating it. `subagent_fork` accepts no preset
+# selection; it inherits this preset and the conversation.
 - insert:
     - id: preset-arthur
       name: '@deepseek-ai/dsh-agent-preset'
@@ -140,8 +142,8 @@
                   provider: spawn
                   toolName: subagent
                   maxDepth: 1
-                  agentPreset: perceval
-                  allowedAgentPresets: [perceval, arthur]
+                  agentPreset: arthur
+                  allowedAgentPresets: [arthur, perceval, bedivere]
               - id: tool-subagent-fork
                 name: '@deepseek-ai/dsh-tool-subagent'
                 config:
