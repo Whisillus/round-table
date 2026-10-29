@@ -1,0 +1,3 @@
+# Agent-local project memory, written by arthur during work.
+# Deliberately not tracked: it records machine-specific facts and changes often.
+.arthur.md

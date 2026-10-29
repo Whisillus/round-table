@@ -62,6 +62,7 @@
             name: '@deepseek-ai/dsh-agent-instructions'
             config:
               maxBytes: 65536
+              instructionFileCandidates: [AGENTS.md, CLAUDE.md, .arthur.md]
           - id: tool-bash
             name: '@deepseek-ai/dsh-tool-bash'
             disabled: !!js process.platform === 'win32'

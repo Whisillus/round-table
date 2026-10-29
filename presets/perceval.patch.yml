@@ -46,6 +46,7 @@
             name: '@deepseek-ai/dsh-agent-instructions'
             config:
               maxBytes: 65536
+              instructionFileCandidates: [AGENTS.md, CLAUDE.md, .arthur.md]
           - id: time-context
             name: '@deepseek-ai/dsh-time-context'
           - id: tool-bash
