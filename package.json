@@ -13,6 +13,7 @@
   "dsh": {
     "bundle": {
       "patch": [
+        "./presets/perceval.patch.yml",
         "./presets/arthur.patch.yml"
       ]
     }
