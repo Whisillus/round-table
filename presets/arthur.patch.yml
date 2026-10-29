@@ -16,6 +16,10 @@
 # degrading it. Self-reference is safe because the registry publishes a
 # definition's record before activating it. `subagent_fork` accepts no preset
 # selection; it inherits this preset and the conversation.
+#
+# The `plan-mode` section below is copied verbatim from the shipped `standard`
+# preset. Upstream wording changes will not propagate; that is the cost of a
+# preset being a snapshot rather than an overlay.
 - insert:
     - id: preset-arthur
       name: '@deepseek-ai/dsh-agent-preset'

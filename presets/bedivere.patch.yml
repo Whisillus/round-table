@@ -10,6 +10,11 @@
 #
 # `tool-jobs` is absent: review commands are short foreground reads, and waiting on
 # a long job is execution, not review.
+#
+# The trigger for using this preset lives in `description` below, not in Arthur's
+# persona: that text is what Arthur reads when choosing a preset, so the rule
+# reaches delegation decisions instead of every request. A few lines in one or two
+# files are reviewed by Arthur itself.
 - insert:
     - id: preset-bedivere
       name: '@deepseek-ai/dsh-agent-preset'
