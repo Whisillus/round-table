@@ -73,9 +73,8 @@ otherwise spawns a full-capability child.
 
 ## Working agreements
 
-`agents/GLOBAL-AGENTS.md` holds language- and style-level working agreements
-produced by this repository. Install them globally by copying, renaming on the
-way:
+`agents/GLOBAL-AGENTS.md` holds the working agreements produced by this
+repository. Install them globally by copying, renaming on the way:
 
 ```bash
 cp agents/GLOBAL-AGENTS.md ~/.agents/AGENTS.md
