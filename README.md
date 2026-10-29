@@ -73,9 +73,8 @@ otherwise spawns a full-capability child.
 
 ## Working agreements
 
-`agents/GLOBAL-AGENTS.md` holds language- and style-level working agreements
-produced by this repository. Install them globally by copying, renaming on the
-way:
+`agents/GLOBAL-AGENTS.md` holds the working agreements produced by this
+repository. Install them globally by copying, renaming on the way:
 
 ```bash
 cp agents/GLOBAL-AGENTS.md ~/.agents/AGENTS.md
@@ -87,6 +86,31 @@ for maintaining it.
 
 > `agents/GLOBAL-AGENTS.md` 是本仓库产出的工作约定，复制时改名即完成全局安装。
 > 本仓库不保留根目录 `AGENTS.md`：该文件是产物，不是维护本仓库的规则。
+
+### Project memory
+
+All three presets also load `.arthur.md` from the repository root, if it exists.
+It is Arthur's own working memory for a repository — the commands that really
+work, environment quirks, non-obvious layout, decisions and their reasons, and
+traps that look correct but fail. Arthur writes and prunes it as it works, and a
+touched instruction file is reloaded within the same session, so a note takes
+effect immediately.
+
+The file is listed in `.gitignore` and is not meant to be committed: it records
+machine-specific facts and changes often. No format is enforced, but the persona
+asks for `## Commands`, `## Environment`, `## Layout`, `## Decisions`, and
+`## Gotchas`, and for roughly a hundred lines — the file is loaded on every
+request, so its size is a standing cost.
+
+> 三个 preset 都会加载仓库根目录的 `.arthur.md`（若存在）。它是 Arthur 自己的
+> 项目记忆：真正可用的命令、环境怪癖、非直观的布局、决策与理由、以及看似正确
+> 但会失败的陷阱。Arthur 在工作过程中维护和清理它；指令文件被触碰后同一会话内
+> 即重新加载，因此笔记立即生效。
+>
+> 本仓库将其列入 `.gitignore`，不提交：它记录机器相关的事实且变动频繁。格式无
+> 强制，但 persona 要求分为 `## Commands`、`## Environment`、`## Layout`、
+> `## Decisions`、`## Gotchas` 五节，并控制在约一百行以内——该文件在每次请求
+> 时都进入上下文，其体量是常驻成本。
 
 ## Development
 

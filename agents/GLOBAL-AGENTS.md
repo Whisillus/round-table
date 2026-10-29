@@ -62,6 +62,26 @@ wins — report the conflict instead of choosing silently.
 - Run the narrowest meaningful check before reporting completion. Say what was
   run, and say plainly when nothing could be run.
 
+## Local reference material
+
+When `~/workspace/reference` exists, it holds local reference material for GPU
+and CUDA work. Read it freely; do not modify it, build in it, or run its scripts
+unless asked.
+
+- `repo/` — upstream projects as git submodules, such as cutlass,
+  flash-attention, FlashMLA, DeepGEMM, flashinfer, and TransformerEngine. List
+  the directory for the current set; some submodules may be uninitialized.
+- `docs/` — versioned NVIDIA documentation, such as `cuda-13-3/`. Cite the
+  versioned copy and name the version.
+- `article/` — papers on GPU microarchitecture.
+
+For CUDA, PTX, GPU kernels, or these libraries, prefer the local checkout over
+web search for implementation details, and the versioned docs for API and
+instruction semantics. Local copies are snapshots and can lag upstream: when the
+task depends on the latest release, API, or behaviour, check the online source
+and say which version each claim comes from. Its own `AGENTS.md` applies when
+working inside it.
+
 ## Version control
 
 - Do not commit, stage, or unstage anything unless explicitly asked. Staging
