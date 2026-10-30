@@ -1,11 +1,11 @@
 # round-table
 
-Agent presets for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness),
-organized as a round table: one presiding agent owns each task and convenes
-specialist agents when the work calls for it.
+Agent presets and CUDA skills for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness),
+organized as a round table: one presiding agent owns each task and brings in
+specialists when the work calls for it.
 
-> 为 DeepSeek Harness 设计的一组 agent preset，按圆桌结构组织：由一位主持者
-> 对每项任务负全责，必要时召集专职 agent。
+> 为 DeepSeek Harness 提供 agent presets 和 CUDA skills，按圆桌结构组织：
+> 由一位主持者对每项任务负全责，必要时召集专职 agent。
 
 ## Presets
 
@@ -15,33 +15,23 @@ specialist agents when the work calls for it.
 | `perceval` | no | reads only | yes | no | Broad research, comparisons, feasibility |
 | `bedivere` | no | inspects only | yes | no | Independent review of a substantial change |
 
-Arthur handles small work itself and delegates when an answer needs many files,
-a tool surface that should not stay open for the whole session, or an independent
-reading. Delegation defaults to `arthur`, so an unspecified child is
-full-capability; `perceval` and `bedivere` must be selected explicitly.
+**Arthur** handles tasks from investigation through implementation and verification,
+bringing in specialists when research or an independent review would help.
 
-> Arthur 自行处理小改动；当任务需要跨大量文件、需要不宜全程常驻的工具面，或需要
-> 一项独立判断时才委派。委派默认交给 `arthur`，即全能力子 agent；`perceval` 与
-> `bedivere` 需显式选择。
+**Perceval** investigates unfamiliar code and documentation, compares options, and
+reports findings and uncertainties without modifying files or running project code.
 
-**Perceval** answers "what is it, what are the options". Its filesystem tools
-cannot write, so findings come back as text. It cannot ask, delegate, or resolve
-ambiguity with the user; it states the assumption it made and the gaps it left.
+**Bedivere** reviews correctness, necessity, maintainability, and consistency with
+project conventions. It works by static inspection; checks that require tests,
+builds, or code execution are left for an agent with execution permission.
 
-**Bedivere** answers "is this change sound". It reviews by inspection only: no
-tests, no builds, no code execution. Anything that needs running is returned as
-an open question with the command that would settle it, and the verdict records
-`Execution: none (static review)`. It judges necessity at two levels — whether
-the change is needed at all, and which changed lines earn their place — and holds
-style to two authorities: what the user asked for, and what the project already
-establishes.
-
-> Perceval 回答「是什么、有哪些选择」；其文件系统工具无法写入，结论以文本返回。
-> Bedivere 回答「这次改动是否站得住」；它仅做静态审查，凡需执行才能定论的，都以
-> 待决问题交回并注明 `Execution: none (static review)`。二者都不会向用户提问，
-> 也不会再委派。
+> Arthur 负责调查、实现与验证，按需召集专职 agent。
+> Perceval 负责研究和方案比较，不修改文件或运行项目代码。
+> Bedivere 负责静态审查，不运行测试、构建或代码。
 
 ## Install
+
+### Presets
 
 Requires DSH `>= 0.2.1-rc.2` and `pnpm`.
 
@@ -50,92 +40,107 @@ corepack enable pnpm
 dsh plugin --profile web add link:/absolute/path/to/round-table
 ```
 
-Restart `dsh` afterwards: presets are composed at startup, so a running process
-does not see a bundle-layer change. The presets then appear under **Custom** in
-the preset selector. Use `link:` rather than a bare path — it pins symlink
-semantics, so editing a preset here needs only a restart.
+Restart `dsh` after installation. The presets appear under **Custom** in the preset
+selector. After updating the linked checkout, restart `dsh` to use the changes.
 
-> 安装后必须重启 `dsh`，preset 在启动时合成。使用 `link:` 可确定符号链接语义，
-> 修改本仓库的 preset 后只需重启，无需重装。
+> 安装后重启 `dsh`，即可在 preset 选择器的 **Custom** 分类中找到这些 presets。
+> 更新链接的仓库后，重启 `dsh` 使修改生效。
+
+### Agreements and skills
+
+Requires Bash 4.4+ and standard Unix file utilities. From the repository directory,
+run:
+
+```bash
+bash install.sh                         # Install agreements and skills
+bash install.sh --module agents         # Install agreements only
+bash install.sh --module skills         # Install skills only
+bash install.sh --module all            # Same as the default
+bash install.sh --help
+```
+
+Agreements are installed to `~/.agents/AGENTS.md` and skills to `~/.agents/skills/`.
+Preset installation is separate and uses the DSH command above.
+
+Rerun the installer after updating the repository. Identical files are skipped;
+to replace files whose contents differ, use `--overwrite`:
+
+```bash
+bash install.sh --overwrite
+bash install.sh --module skills --overwrite
+```
+
+Unrelated files are preserved, and obsolete files are not removed automatically.
+Destination paths must not contain symbolic links. If copying fails, files already
+copied remain installed.
+
+For a different destination, set `ROUND_TABLE_INSTALL_DIR` to an absolute path.
+This changes the installation location; configure your agent to discover skills
+there if needed.
+
+> 需要 Bash 4.4+ 和标准 Unix 文件工具。在仓库目录运行 `bash install.sh`，
+> 默认安装约定和 skills；使用 `--module agents` 或 `--module skills` 可单独安装。
+> 更新仓库后重新运行即可更新安装内容，内容冲突需显式使用 `--overwrite`。
+> 其他文件会保留，过时文件需手动清理；目标路径不能包含符号链接。
+> 复制失败时，已完成的复制不会回滚。可通过 `ROUND_TABLE_INSTALL_DIR` 指定绝对路径，
+> 并按需配置 agent 的技能发现目录。Presets 需使用上方 DSH 命令单独安装。
+
+## Skills
+
+The CUDA skills cover programming, reference lookup, toolchains, APIs, and
+synchronization.
+
+| Skill | Use for |
+|---|---|
+| `cuda-basic` | CUDA entry point, kernels, memory, streams, and debugging |
+| `cuda-general-reference` | NVIDIA documentation and local reference discovery |
+| `cuda-build-toolchain` | NVCC, runtime compilation, linking, and binary inspection |
+| `cuda-runtime-driver` | Runtime/Driver APIs, contexts, streams, memory, and graphs |
+| `cuda-fence-sync-barrier` | Memory ordering, barriers, and async completion protocols |
+
+DSH discovers skills installed in `~/.agents/skills/`. CUDA tooling and reference
+materials are not included. Skills follow the active agent's permissions;
+Bedivere remains a static reviewer when using them.
+
+> CUDA skills 覆盖编程、参考资料查询、工具链、API 和同步。
+> DSH 会发现安装在 `~/.agents/skills/` 下的技能；CUDA 工具和参考资料需另行准备。
+> 使用技能仍受当前 agent 的权限约束，Bedivere 始终只做静态审查。
 
 ## Choosing a preset
 
-Each new session picks a preset in the selector; the default for future sessions
-is set under Settings → General. A preset is fixed when the session starts, so an
-existing session keeps the composition it was created with.
+Choose a preset in the selector when starting a session. Set the default for future
+sessions under **Settings → General**. Existing sessions keep their original preset.
 
-Delegation inside a session is separate from the preset you chose: Arthur asks the
-model to pick `perceval` or `bedivere` when the task is research or review, and
-otherwise spawns a full-capability child.
+Use Arthur for work that includes implementation, Perceval for research and
+comparisons, and Bedivere for an independent static review.
 
-> 选择器决定新会话的 preset；已存在会话保持创建时的组合。会话内的委派是另一件
-> 事：研究与审查会显式指定 `perceval` / `bedivere`，其余情况派生全能力子 agent。
+> 新建会话时在选择器中选择 preset；在 **Settings → General** 设置后续会话的默认值。
+> 已有会话保持原 preset。实现任务选择 Arthur，研究与比较选择 Perceval，
+> 独立静态审查选择 Bedivere。
 
 ## Working agreements
 
-`agents/GLOBAL-AGENTS.md` holds the working agreements produced by this
-repository. Install them globally by copying, renaming on the way:
+The [working agreements](agents/GLOBAL-AGENTS.md) cover failure handling, scope,
+readability, verification, and version control. Install them for use across your
+repositories:
 
 ```bash
-cp agents/GLOBAL-AGENTS.md ~/.agents/AGENTS.md
+bash install.sh --module agents
 ```
 
-Nothing here loads `agents/` automatically, and this repository deliberately does
-not keep a root `AGENTS.md`: the file is a product of this repository, not a rule
-for maintaining it.
-
-> `agents/GLOBAL-AGENTS.md` 是本仓库产出的工作约定，复制时改名即完成全局安装。
-> 本仓库不保留根目录 `AGENTS.md`：该文件是产物，不是维护本仓库的规则。
+> 工作约定涵盖错误处理、改动范围、可读性、验证和版本控制。
+> 安装到 `~/.agents/AGENTS.md` 后，可在各仓库中使用。
 
 ### Project memory
 
-All three presets also load `.arthur.md` from the repository root, if it exists.
-It is Arthur's own working memory for a repository — the commands that really
-work, environment quirks, non-obvious layout, decisions and their reasons, and
-traps that look correct but fail. Arthur writes and prunes it as it works, and a
-touched instruction file is reloaded within the same session, so a note takes
-effect immediately.
+All three presets use `.arthur.md` in the repository root when present. Arthur
+maintains it to retain useful project knowledge across sessions, such as verified
+commands, environment quirks, and decisions with their reasons. Keep machine-specific
+notes out of version control.
 
-The file is listed in `.gitignore` and is not meant to be committed: it records
-machine-specific facts and changes often. No format is enforced, but the persona
-asks for `## Commands`, `## Environment`, `## Layout`, `## Decisions`, and
-`## Gotchas`, and for roughly a hundred lines — the file is loaded on every
-request, so its size is a standing cost.
-
-> 三个 preset 都会加载仓库根目录的 `.arthur.md`（若存在）。它是 Arthur 自己的
-> 项目记忆：真正可用的命令、环境怪癖、非直观的布局、决策与理由、以及看似正确
-> 但会失败的陷阱。Arthur 在工作过程中维护和清理它；指令文件被触碰后同一会话内
-> 即重新加载，因此笔记立即生效。
->
-> 本仓库将其列入 `.gitignore`，不提交：它记录机器相关的事实且变动频繁。格式无
-> 强制，但 persona 要求分为 `## Commands`、`## Environment`、`## Layout`、
-> `## Decisions`、`## Gotchas` 五节，并控制在约一百行以内——该文件在每次请求
-> 时都进入上下文，其体量是常驻成本。
-
-## Development
-
-The bundle is a single manifest plus one patch file per preset. `dsh.bundle.patch`
-order is the layer order.
-
-```bash
-DSH_HOME=$(mktemp -d) \
-  dsh --profile web --dump-config \
-  --patch ./presets/perceval.patch.yml \
-  --patch ./presets/bedivere.patch.yml \
-  --patch ./presets/arthur.patch.yml
-```
-
-Point `DSH_HOME` at a throwaway directory: `--dump-config` rewrites the profile's
-`cordis.yml` before printing, so running it against a live profile has a side
-effect even though it mounts nothing.
-
-This validates YAML syntax, `!!js` expressions, patch targeting, and row order. It
-does not validate whether plugin names resolve, whether a preset id collides, or
-whether activation succeeds — those surface only at mount time.
-
-> 该命令验证语法、`!!js` 表达式、补丁定位与行序；不验证插件名解析、id 冲突与激活
-> 成败，后者仅在真实挂载时暴露。`DSH_HOME` 必须指向临时目录，因为 `--dump-config`
-> 会先重写 profile 的 `cordis.yml`。
+> 三个 presets 都会使用仓库根目录的 `.arthur.md`（若存在）。Arthur 维护其中的
+> 项目知识，例如已验证的命令、环境注意事项和决策理由，供后续会话参考。
+> 与本机环境相关的笔记不应提交到版本控制。
 
 ## License
 
