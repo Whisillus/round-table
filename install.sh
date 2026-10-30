@@ -53,20 +53,17 @@ if [[ $module == skills || $module == all ]]; then
         printf 'No skills found in %s/skills\n' "$repo_dir" >&2
         exit 1
     fi
-    # A file rather than process substitution, so set -e stops on a failed walk.
-    listing=$(mktemp)
-    trap 'rm -f -- "$listing"' EXIT
     for skill_dir in "${skill_dirs[@]}"; do
         if [[ ! -d $skill_dir || -L $skill_dir || ! -f $skill_dir/SKILL.md ]]; then
             printf 'Expected a skill directory with SKILL.md: %s\n' "$skill_dir" >&2
             exit 1
         fi
-        find "$skill_dir" -mindepth 1 ! -type d -print0 > "$listing"
-        sort -z -o "$listing" "$listing"
-        while IFS= read -r -d '' source; do
+        # An assignment, unlike process substitution, lets set -e stop on a failed walk.
+        skill_files=$(find "$skill_dir" -mindepth 1 ! -type d | LC_ALL=C sort)
+        while IFS= read -r source; do
             sources+=("$source")
             targets+=("$target_dir/skills/${source#"$repo_dir/skills/"}")
-        done < "$listing"
+        done <<< "$skill_files"
     done
 fi
 
