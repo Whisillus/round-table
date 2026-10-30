@@ -47,7 +47,7 @@ if [[ $module == agents || $module == all ]]; then
     targets+=("$target_dir/AGENTS.md")
 fi
 if [[ $module == skills || $module == all ]]; then
-    shopt -s nullglob globstar dotglob
+    shopt -s nullglob dotglob
     skill_dirs=("$repo_dir"/skills/*)
     if (( ${#skill_dirs[@]} == 0 )); then
         printf 'No skills found in %s/skills\n' "$repo_dir" >&2
@@ -58,12 +58,10 @@ if [[ $module == skills || $module == all ]]; then
             printf 'Expected a skill directory with SKILL.md: %s\n' "$skill_dir" >&2
             exit 1
         fi
-        for source in "$skill_dir"/**; do
-            if [[ -L $source || ! -d $source ]]; then
-                sources+=("$source")
-                targets+=("$target_dir/skills/${source#"$repo_dir/skills/"}")
-            fi
-        done
+        while IFS= read -r -d '' source; do
+            sources+=("$source")
+            targets+=("$target_dir/skills/${source#"$repo_dir/skills/"}")
+        done < <(find "$skill_dir" -mindepth 1 ! -type d -print0 | sort -z)
     done
 fi
 
