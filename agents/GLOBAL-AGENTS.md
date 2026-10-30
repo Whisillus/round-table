@@ -13,6 +13,10 @@ wins — report the conflict instead of choosing silently.
 - Fail fast at the boundary: validate required inputs, configuration, and
   environment before doing work, and surface the exact blocker — path, value,
   exit code — instead of a generic message.
+- Validate external inputs at trust boundaries. Inside those boundaries, trust
+  established types, preconditions, and invariants unless concrete evidence shows
+  they can be violated. Do not repeat validation or handle states excluded by
+  those contracts.
 - No silent fallback, default substitution, catch-all handler, or retry loop
   unless the project already does it or the user asks for it. Missing required
   state is a real failure.

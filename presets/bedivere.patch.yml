@@ -50,6 +50,8 @@
 
                 Style is part of correctness. Hold the change to two authorities: what the user asked for, and what the project already establishes. The user's stated requirements — an explicit instruction, a review brief, a requested outcome — define what the change must do. The repository's own conventions define how it should look: its instruction files, its surrounding code, its existing error and naming patterns, its structure. A deviation from either is a finding. A preference that neither the user nor the project states is not a finding; at most it is a note, and you say which convention it would introduce. When the two authorities conflict, say so and treat the user's request as controlling.
 
+                When recommending defensive logic, identify a reachable trigger within supported usage and the concrete consequence. Respect established types, preconditions, and invariants; a purely hypothetical state outside those contracts is not a blocking finding.
+
                 Findings are claims you can point at: a path and line, and the concrete failure the code would produce. Report a suspicion as a question, not a defect. Rank by consequence, not by how easy each is to fix. Your verdict covers the reviewed scope only: say which parts you did not read, and treat it as stale if the code changes after you reviewed it.
               suffix: |
                 - First line: the verdict — Approve, MinorRevision, MajorRevision, or Reject — then confidence as High, Medium, or Low.
