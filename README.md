@@ -1,11 +1,11 @@
 # round-table
 
-Agent presets and CUDA, CuTe C++, and CuTe DSL skills for
+Agent presets and CUDA, CuTe C++, CuTe DSL, and Git workflow skills for
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness),
 organized as a round table: one presiding agent owns each task and brings in
 specialists when the work calls for it.
 
-> 为 DeepSeek Harness 提供 agent presets 以及 CUDA、CuTe C++ 和 CuTe DSL skills，按圆桌结构组织：
+> 为 DeepSeek Harness 提供 agent presets 以及 CUDA、CuTe C++、CuTe DSL 和 Git 工作流 skills，按圆桌结构组织：
 > 由一位主持者对每项任务负全责，必要时召集专职 agent。
 
 ## Presets
@@ -89,7 +89,8 @@ there if needed.
 ## Skills
 
 The skills cover CUDA programming and the CuTe C++ and CuTe DSL APIs for layouts,
-tensors, data movement, matrix multiplication, and pipelines.
+tensors, data movement, matrix multiplication, and pipelines. Git skills help
+prepare commits and maintain project ignore rules.
 
 | Skill | Use for |
 |---|---|
@@ -110,12 +111,15 @@ tensors, data movement, matrix multiplication, and pipelines.
 | `cutedsl-copy` | DSL copy atoms, tiled copies, predication, and TMA |
 | `cutedsl-mma` | DSL MMA atoms, tiled MMA, fragments, and GEMM |
 | `cutedsl-pipeline` | DSL pipeline classes and producer/consumer protocols |
+| `write-git-commit` | Commit preparation, selective staging, and repository-aware messages |
+| `write-gitignore` | Conservative ignore rules for local files and generated outputs |
 
 DSH discovers skills installed in `~/.agents/skills/`. CUDA tooling and reference
 materials are not included. Skills follow the active agent's permissions;
 Bedivere remains a static reviewer when using them.
 
 > Skills 覆盖 CUDA 编程，以及 CuTe C++ 和 CuTe DSL 的布局、张量、数据搬运、矩阵乘法和流水线。
+> Git skills 用于准备提交和维护项目忽略规则。
 > DSH 会发现安装在 `~/.agents/skills/` 下的技能；CUDA 工具和参考资料需另行准备。
 > 使用技能仍受当前 agent 的权限约束，Bedivere 始终只做静态审查。
 
