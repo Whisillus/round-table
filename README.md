@@ -1,10 +1,11 @@
 # round-table
 
-Agent presets and CUDA skills for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness),
+Agent presets and CUDA, CuTe C++, and CuTe DSL skills for
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness),
 organized as a round table: one presiding agent owns each task and brings in
 specialists when the work calls for it.
 
-> 为 DeepSeek Harness 提供 agent presets 和 CUDA skills，按圆桌结构组织：
+> 为 DeepSeek Harness 提供 agent presets 以及 CUDA、CuTe C++ 和 CuTe DSL skills，按圆桌结构组织：
 > 由一位主持者对每项任务负全责，必要时召集专职 agent。
 
 ## Presets
@@ -87,8 +88,8 @@ there if needed.
 
 ## Skills
 
-The CUDA skills cover programming, reference lookup, toolchains, APIs, and
-synchronization.
+The skills cover CUDA programming and the CuTe C++ and CuTe DSL APIs for layouts,
+tensors, data movement, matrix multiplication, and pipelines.
 
 | Skill | Use for |
 |---|---|
@@ -97,12 +98,24 @@ synchronization.
 | `cuda-build-toolchain` | NVCC, runtime compilation, linking, and binary inspection |
 | `cuda-runtime-driver` | Runtime/Driver APIs, contexts, streams, memory, and graphs |
 | `cuda-fence-sync-barrier` | Memory ordering, barriers, and async completion protocols |
+| `cute-basic` | CuTe C++ entry point, conventions, predication, and debugging |
+| `cute-layout` | C++ layouts, layout algebra, tiling, and partitioning |
+| `cute-tensor` | C++ tensors, memory-space pointers, fragments, and slicing |
+| `cute-copy` | C++ copy atoms, tiled copies, predication, and TMA |
+| `cute-mma` | C++ MMA atoms, tiled MMA, fragments, and GEMM |
+| `cute-pipeline` | C++ CUTLASS pipeline classes and producer/consumer protocols |
+| `cutedsl-basic` | CuTe DSL entry point, JIT functions, types, and debugging |
+| `cutedsl-layout` | DSL layouts, layout algebra, tiling, and partitioning |
+| `cutedsl-tensor` | DSL tensors, pointers, register tensors, and slicing |
+| `cutedsl-copy` | DSL copy atoms, tiled copies, predication, and TMA |
+| `cutedsl-mma` | DSL MMA atoms, tiled MMA, fragments, and GEMM |
+| `cutedsl-pipeline` | DSL pipeline classes and producer/consumer protocols |
 
 DSH discovers skills installed in `~/.agents/skills/`. CUDA tooling and reference
 materials are not included. Skills follow the active agent's permissions;
 Bedivere remains a static reviewer when using them.
 
-> CUDA skills 覆盖编程、参考资料查询、工具链、API 和同步。
+> Skills 覆盖 CUDA 编程，以及 CuTe C++ 和 CuTe DSL 的布局、张量、数据搬运、矩阵乘法和流水线。
 > DSH 会发现安装在 `~/.agents/skills/` 下的技能；CUDA 工具和参考资料需另行准备。
 > 使用技能仍受当前 agent 的权限约束，Bedivere 始终只做静态审查。
 
