@@ -49,7 +49,7 @@ selector. After updating the linked checkout, restart `dsh` to use the changes.
 
 ### Agreements and skills
 
-Requires Bash 4.4+ and standard Unix file utilities. From the repository directory,
+Requires Bash 3.2+ and standard Unix file utilities. From the repository directory,
 run:
 
 ```bash
@@ -79,7 +79,7 @@ For a different destination, set `ROUND_TABLE_INSTALL_DIR` to an absolute path.
 This changes the installation location; configure your agent to discover skills
 there if needed.
 
-> 需要 Bash 4.4+ 和标准 Unix 文件工具。在仓库目录运行 `bash install.sh`，
+> 需要 Bash 3.2+ 和标准 Unix 文件工具。在仓库目录运行 `bash install.sh`，
 > 默认安装约定和 skills；使用 `--module agents` 或 `--module skills` 可单独安装。
 > 更新仓库后重新运行即可更新安装内容，内容冲突需显式使用 `--overwrite`。
 > 其他文件会保留，过时文件需手动清理；目标路径不能包含符号链接。
