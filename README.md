@@ -1,11 +1,11 @@
 # round-table
 
-Agent presets and CUDA, CuTe C++, CuTe DSL, and Git workflow skills for
+Agent presets and CUDA, CuTe C++, CuTe DSL, PDF, and Git workflow skills for
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness),
 organized as a round table: one presiding agent owns each task and brings in
 specialists when the work calls for it.
 
-> 为 DeepSeek Harness 提供 agent presets 以及 CUDA、CuTe C++、CuTe DSL 和 Git 工作流 skills，按圆桌结构组织：
+> 为 DeepSeek Harness 提供 agent presets 以及 CUDA、CuTe C++、CuTe DSL、PDF 和 Git 工作流 skills，按圆桌结构组织：
 > 由一位主持者对每项任务负全责，必要时召集专职 agent。
 
 ## Presets
@@ -49,7 +49,7 @@ selector. After updating the linked checkout, restart `dsh` to use the changes.
 
 ### Agreements and skills
 
-Requires Bash 4.4+ and standard Unix file utilities. From the repository directory,
+Requires Bash 3.2+ and standard Unix file utilities. From the repository directory,
 run:
 
 ```bash
@@ -79,7 +79,7 @@ For a different destination, set `ROUND_TABLE_INSTALL_DIR` to an absolute path.
 This changes the installation location; configure your agent to discover skills
 there if needed.
 
-> 需要 Bash 4.4+ 和标准 Unix 文件工具。在仓库目录运行 `bash install.sh`，
+> 需要 Bash 3.2+ 和标准 Unix 文件工具。在仓库目录运行 `bash install.sh`，
 > 默认安装约定和 skills；使用 `--module agents` 或 `--module skills` 可单独安装。
 > 更新仓库后重新运行即可更新安装内容，内容冲突需显式使用 `--overwrite`。
 > 其他文件会保留，过时文件需手动清理；目标路径不能包含符号链接。
@@ -89,8 +89,9 @@ there if needed.
 ## Skills
 
 The skills cover CUDA programming and the CuTe C++ and CuTe DSL APIs for layouts,
-tensors, data movement, matrix multiplication, and pipelines. Git skills help
-prepare commits and maintain project ignore rules.
+tensors, data movement, matrix multiplication, and pipelines. The PDF skill reads,
+searches, renders, OCRs, splits, and merges PDF files. Git skills help prepare
+commits and maintain project ignore rules.
 
 | Skill | Use for |
 |---|---|
@@ -111,16 +112,19 @@ prepare commits and maintain project ignore rules.
 | `cutedsl-copy` | DSL copy atoms, tiled copies, predication, and TMA |
 | `cutedsl-mma` | DSL MMA atoms, tiled MMA, fragments, and GEMM |
 | `cutedsl-pipeline` | DSL pipeline classes and producer/consumer protocols |
+| `process-pdf` | PDF text, tables, figures, OCR, search, and page splitting or merging |
 | `write-git-commit` | Commit preparation, selective staging, and repository-aware messages |
 | `write-gitignore` | Conservative ignore rules for local files and generated outputs |
 
 DSH discovers skills installed in `~/.agents/skills/`. CUDA tooling and reference
-materials are not included. Skills follow the active agent's permissions;
+materials are not included. `process-pdf` requires poppler (`brew install poppler`)
+and, for scanned PDFs, tesseract. Skills follow the active agent's permissions;
 Bedivere remains a static reviewer when using them.
 
 > Skills 覆盖 CUDA 编程，以及 CuTe C++ 和 CuTe DSL 的布局、张量、数据搬运、矩阵乘法和流水线。
-> Git skills 用于准备提交和维护项目忽略规则。
+> PDF skill 用于读取、搜索、渲染、OCR、拆分和合并 PDF 文件。Git skills 用于准备提交和维护项目忽略规则。
 > DSH 会发现安装在 `~/.agents/skills/` 下的技能；CUDA 工具和参考资料需另行准备。
+> `process-pdf` 需要 poppler（`brew install poppler`），处理扫描件还需要 tesseract。
 > 使用技能仍受当前 agent 的权限约束，Bedivere 始终只做静态审查。
 
 ## Choosing a preset
