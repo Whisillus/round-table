@@ -1,11 +1,12 @@
 # round-table
 
-Agent presets and CUDA, CuTe C++, CuTe DSL, PDF, and Git workflow skills for
+Agent presets and CUDA, CuTe C++, CuTe DSL, LLM parameter estimation, PDF, and Git
+workflow skills for
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness),
 organized as a round table: one presiding agent owns each task and brings in
 specialists when the work calls for it.
 
-> 为 DeepSeek Harness 提供 agent presets 以及 CUDA、CuTe C++、CuTe DSL、PDF 和 Git 工作流 skills，按圆桌结构组织：
+> 为 DeepSeek Harness 提供 agent presets 以及 CUDA、CuTe C++、CuTe DSL、LLM 参数估算、PDF 和 Git 工作流 skills，按圆桌结构组织：
 > 由一位主持者对每项任务负全责，必要时召集专职 agent。
 
 ## Presets
@@ -89,9 +90,10 @@ there if needed.
 ## Skills
 
 The skills cover CUDA programming and the CuTe C++ and CuTe DSL APIs for layouts,
-tensors, data movement, matrix multiplication, and pipelines. The PDF skill reads,
-searches, renders, OCRs, splits, and merges PDF files. Git skills help prepare
-commits and maintain project ignore rules.
+tensors, data movement, matrix multiplication, and pipelines. The LLM parameter
+estimation skill computes the parameter count and weight memory of transformer
+components and blocks. The PDF skill reads, searches, renders, OCRs, splits, and
+merges PDF files. Git skills help prepare commits and maintain project ignore rules.
 
 | Skill | Use for |
 |---|---|
@@ -112,18 +114,22 @@ commits and maintain project ignore rules.
 | `cutedsl-copy` | DSL copy atoms, tiled copies, predication, and TMA |
 | `cutedsl-mma` | DSL MMA atoms, tiled MMA, fragments, and GEMM |
 | `cutedsl-pipeline` | DSL pipeline classes and producer/consumer protocols |
+| `llm-model-param-estimation` | Parameter count and weight memory of transformer components and blocks |
 | `process-pdf` | PDF text, tables, figures, OCR, search, and page splitting or merging |
 | `write-git-commit` | Commit preparation, selective staging, and repository-aware messages |
 | `write-gitignore` | Conservative ignore rules for local files and generated outputs |
 
 DSH discovers skills installed in `~/.agents/skills/`. CUDA tooling and reference
-materials are not included. `process-pdf` requires poppler (`brew install poppler`)
+materials are not included. `llm-model-param-estimation` runs its scripts with
+Python 3.9 or later. `process-pdf` requires poppler (`brew install poppler`)
 and, for scanned PDFs, tesseract. Skills follow the active agent's permissions;
 Bedivere remains a static reviewer when using them.
 
 > Skills 覆盖 CUDA 编程，以及 CuTe C++ 和 CuTe DSL 的布局、张量、数据搬运、矩阵乘法和流水线。
+> LLM 参数估算 skill 用于计算 Transformer 组件和 block 的参数量与权重显存。
 > PDF skill 用于读取、搜索、渲染、OCR、拆分和合并 PDF 文件。Git skills 用于准备提交和维护项目忽略规则。
 > DSH 会发现安装在 `~/.agents/skills/` 下的技能；CUDA 工具和参考资料需另行准备。
+> `llm-model-param-estimation` 的脚本需要 Python 3.9 或更高版本。
 > `process-pdf` 需要 poppler（`brew install poppler`），处理扫描件还需要 tesseract。
 > 使用技能仍受当前 agent 的权限约束，Bedivere 始终只做静态审查。
 
