@@ -38,6 +38,11 @@ edit `.gitignore` for it; whether it is tracked is the user's decision. The
 article itself is the target file the user names; write the draft there and
 leave history to version control. Do not keep numbered draft copies.
 
+A post outside any series has no `series.md`. Its `brief.md` adds the
+`Language and tone`, `Rendering target`, `Terms`, and `Symbols` sections from
+the `series.md` template, and every step or reference that reads or updates
+`series.md` uses those sections of the brief instead.
+
 `series.md`:
 
 ```markdown
@@ -67,11 +72,11 @@ Target file (zh):
 Target file (en): <path, or none>
 English sync: not started / in sync / pending since <date>
 Form: blog post / technical report / talk script / slides
-Stage: discussion / outline / drafting / review / done
+Stage: discussion / outline / drafting / review / en-drafting / en-review / done
 
 ## Purpose
 ## Reader
-<only what differs from series.md>
+<only what differs from series.md; a standalone post states it in full>
 ## Scope
 ## Out of scope
 ## Outline
@@ -103,9 +108,11 @@ machine-sounding and translationese patterns of their own language in
 ## Resuming
 
 At the start of a session, after a context compaction, and whenever the user
-asks to continue, read `series.md`, `brief.md`, and `reviews.md`, then the
-target files, before writing anything. The files are authoritative over what
-you remember. Update `Stage` in `brief.md` when the stage changes.
+asks to continue, read `series.md` if the post is in a series, `brief.md`,
+and `reviews.md`, then the Chinese target file, and the English one as well
+when `Stage` is `en-drafting` or `en-review` or `English sync` is pending,
+before writing anything. The files are authoritative over what you remember.
+Update `Stage` in `brief.md` when the stage changes.
 
 ## Entry points
 
@@ -135,12 +142,13 @@ you remember. Update `Stage` in `brief.md` when the stage changes.
    reject it with a reason. Re-review after fixing blocking findings. After
    three rounds with blocking findings still open, stop and ask the user.
 5. **English version.** Skip when `Target file (en)` is none. After the user
-   accepts the Chinese version, write the English adaptation, run the English
-   pattern scan, and send it to Bedivere only, with both files in the packet;
-   content was verified on the Chinese version. Set `English sync: in sync`
-   when the user accepts it.
-6. **Done.** Set `Stage: done`, and add the post's terms, symbols, and covered
-   points to `series.md`.
+   accepts the Chinese version, set `Stage: en-drafting`, write the English
+   adaptation, and run the English pattern scan. Then set `Stage: en-review`
+   and send it to Bedivere only, with both files in the packet; content was
+   verified on the Chinese version. Set `English sync: in sync` when the user
+   accepts it.
+6. **Done.** Set `Stage: done`. For a series post, add its terms, symbols, and
+   covered points to `series.md`.
 
 When the Chinese version changes after the English version exists, set
 `English sync: pending since <date>`; bring the English version back in line

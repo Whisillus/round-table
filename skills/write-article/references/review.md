@@ -21,7 +21,7 @@ Every review task names:
 - the target file and its version (zh or en), and that the review covers the
   whole file or the listed sections only;
 - for an English review, the accepted Chinese version as well;
-- the paths of `series.md` and `brief.md`;
+- the path of `brief.md`, and of `series.md` if the post is in a series;
 - the skill to load (`write-article`) and the references to read;
 - the findings already rejected in `reviews.md`, with their reasons, and the
   instruction not to raise them again unless the text changed;
@@ -45,8 +45,9 @@ and `references/notation.md` if the article has math. Check, in this order:
    already knows.
 3. **Brief and form.** Scope kept, purpose served, outline followed, form
    conventions met.
-4. **Series consistency.** Terms and symbols match `series.md`; nothing
-   re-explains a point listed under `Covered so far`.
+4. **Series consistency.** Terms and symbols match `series.md`, or the
+   brief's tables for a standalone post; nothing re-explains a point listed
+   under `Covered so far`.
 5. **Notation and rendering.** Symbols follow `notation.md` and the series
    table; delimiters and environments suit the recorded rendering target.
 6. **Redundancy.** Sentences and paragraphs that can be deleted without loss.
@@ -96,6 +97,13 @@ Severity:
 ## After the review
 
 Copy each finding into `reviews.md` with its round number, update
-`sources.md` from Perceval's verdicts, then fix or reject each finding. Re-run
-only the reviews whose findings were blocking, on the changed sections, and
-state in the packet which sections changed.
+`sources.md` from Perceval's verdicts, then fix or reject each finding. Choose the
+follow-up reviewers by what the fixes changed, not by whose findings they
+answered:
+
+- any change in wording: Bedivere, on the changed sections;
+- any change to a fact, number, formula, citation, or code in the Chinese
+  version: Perceval, on the changed sections.
+
+Nearly every fix changes wording, so Bedivere runs in almost every round. State
+in the packet which sections changed.
