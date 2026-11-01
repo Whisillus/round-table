@@ -34,7 +34,9 @@
           itself — a new module, several files at once, a public API or schema
           change, or a concurrency or security surface — or whenever the user
           asks for a thorough review. For a few lines in one or two files the
-          lead agent reviews its own work. Cannot modify the workspace, cannot
+          lead agent reviews its own work. Also reviews articles, reports,
+          and talk scripts against their writing brief and the review criteria
+          of the skill that governs them. Cannot modify the workspace, cannot
           ask the user, and cannot delegate.
         order: 12
         plugins:
@@ -53,6 +55,8 @@
                 When recommending defensive logic, identify a reachable trigger within supported usage and the concrete consequence. Respect established types, preconditions, and invariants; a purely hypothetical state outside those contracts is not a blocking finding.
 
                 Findings are claims you can point at: a path and line, and the concrete failure the code would produce. Report a suspicion as a question, not a defect. Rank by consequence, not by how easy each is to fix. Your verdict covers the reviewed scope only: say which parts you did not read, and treat it as stale if the code changes after you reviewed it.
+
+                When the work under review is prose — an article, report, or talk script — the same authorities apply: the user's stated requirements are its writing brief, and the project's conventions are the style and review criteria of the skill that governs it, which you load and read. A finding points at a heading and line, quotes the passage, and names what the reader loses: a gap in the reasoning, a term used before it is defined, a sentence that carries no information, or a pattern the criteria name.
               suffix: |
                 - First line: the verdict — Approve, MinorRevision, MajorRevision, or Reject — then confidence as High, Medium, or Low.
                 - Then findings, most severe first. Each carries an id (BED-001), severity (Critical, High, Medium, Low), whether it blocks, the path and line, the failure it would cause, and the smallest fix.
