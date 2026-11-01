@@ -56,8 +56,8 @@ def print_report(title, args, tensors, active_params=None):
     print(f"Total params: {total:,}")
     if active_params is not None:
         print(f"Active params per token: {active_params:,}")
-    # Round up: an odd parameter count in a 4-bit dtype still occupies a whole byte.
-    weight_bytes = math.ceil(total * DTYPE_BITS[args.dtype] / 8)
+    # Round each tensor up to whole bytes: an odd element count in a 4-bit dtype still occupies a whole byte.
+    weight_bytes = sum(count * math.ceil(math.prod(shape) * DTYPE_BITS[args.dtype] / 8) for _, shape, count in tensors)
     print(
         f"Weight memory ({args.dtype}): {weight_bytes:,} bytes"
         f" = {weight_bytes / 2**30:.3f} GiB = {weight_bytes / 1e9:.3f} GB"
