@@ -21,29 +21,13 @@ def positive_int(text):
     return value
 
 
-def non_negative_int(text):
-    value = int(text)
-    if value < 0:
-        raise argparse.ArgumentTypeError(f"expected a non-negative integer, got {text}")
-    return value
-
-
 def add_common_arguments(parser):
     parser.add_argument("--hidden", type=positive_int, required=True, help="hidden size")
     parser.add_argument("--dtype", choices=DTYPE_BITS, default="bf16", help="weight dtype (default: bf16)")
 
 
-def tensor_params(tensor):
-    _, shape, count = tensor
-    return count * math.prod(shape)
-
-
 def total_params(tensors):
-    return sum(tensor_params(tensor) for tensor in tensors)
-
-
-def with_prefix(prefix, tensors):
-    return [(prefix + name, shape, count) for name, shape, count in tensors]
+    return sum(count * math.prod(shape) for _, shape, count in tensors)
 
 
 def print_report(title, args, tensors, active_params=None):
@@ -57,12 +41,11 @@ def print_report(title, args, tensors, active_params=None):
     print()
 
     rows = []
-    for tensor in tensors:
-        name, shape, count = tensor
+    for name, shape, count in tensors:
         shape_text = "[" + ", ".join(str(size) for size in shape) + "]"
         if count > 1:
             shape_text = f"{count} x {shape_text}"
-        rows.append((name, shape_text, f"{tensor_params(tensor):,}"))
+        rows.append((name, shape_text, f"{count * math.prod(shape):,}"))
     headers = ("Tensor", "Shape", "Params")
     widths = [max(len(row[column]) for row in rows + [headers]) for column in range(3)]
     for name, shape_text, params in [headers] + rows:

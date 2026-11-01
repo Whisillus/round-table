@@ -10,7 +10,7 @@ import argparse
 import estimate_attention
 import estimate_ffn
 import estimate_norm
-from common import add_common_arguments, print_report, total_params, with_prefix
+from common import add_common_arguments, print_report, total_params
 
 
 def main():
@@ -23,9 +23,9 @@ def main():
     estimate_attention.validate(parser, args)
     estimate_ffn.validate(parser, args)
 
-    attention = with_prefix("self_attn.", estimate_attention.estimate(args))
+    attention = [("self_attn." + name, shape, count) for name, shape, count in estimate_attention.estimate(args)]
     ffn_tensors, ffn_active = estimate_ffn.estimate(args)
-    ffn = with_prefix("mlp.", ffn_tensors)
+    ffn = [("mlp." + name, shape, count) for name, shape, count in ffn_tensors]
     input_norm = estimate_norm.estimate(args, "input_layernorm")
     post_attention_norm = estimate_norm.estimate(args, "post_attention_layernorm")
     tensors = input_norm + attention + post_attention_norm + ffn

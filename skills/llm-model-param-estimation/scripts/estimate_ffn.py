@@ -7,7 +7,7 @@ parameters.
 
 import argparse
 
-from common import add_common_arguments, non_negative_int, positive_int, print_report, total_params
+from common import add_common_arguments, positive_int, print_report, total_params
 
 MOE_ONLY_ARGUMENTS = (
     "experts",
@@ -33,7 +33,7 @@ def add_arguments(parser):
     parser.add_argument("--experts", type=positive_int, help="moe: number of routed experts")
     parser.add_argument("--top-k", type=positive_int, help="moe: routed experts active per token")
     parser.add_argument("--moe-intermediate", type=positive_int, help="moe: intermediate size of one routed expert")
-    parser.add_argument("--shared-experts", type=non_negative_int, help="moe: number of shared experts (default: 0)")
+    parser.add_argument("--shared-experts", type=positive_int, help="moe: number of shared experts (default: none)")
     parser.add_argument(
         "--shared-intermediate",
         type=positive_int,
@@ -65,7 +65,7 @@ def validate(parser, args):
     if args.top_k > args.experts:
         parser.error(f"--top-k ({args.top_k}) cannot exceed --experts ({args.experts})")
     if not args.shared_experts and (args.shared_intermediate is not None or args.shared_expert_gate):
-        parser.error("--shared-intermediate and --shared-expert-gate require --shared-experts of at least 1")
+        parser.error("--shared-intermediate and --shared-expert-gate require --shared-experts")
 
 
 def projections(prefix, hidden, intermediate, style, bias, count):
