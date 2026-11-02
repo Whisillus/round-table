@@ -29,7 +29,8 @@ Every review task names:
 - for Perceval, the path of `sources.md`;
 - when the article has figures: for Bedivere, the rendered PNG of each figure
   (reviewers may not generate files, so the lead agent renders them); for
-  Perceval, each figure's source script and data file;
+  Perceval, each figure's source script and its data file if it has one;
+  existing assets without a source are listed as such;
 - that the reviewer must not edit any file and returns findings as text.
 
 ## Reading review (Bedivere)
@@ -79,7 +80,8 @@ Read `references/notation.md` if the article has math. Check:
    stated complexities match the algorithm described.
 4. **Figures.** Read each figure's script and data: the parameters match the
    text, the computed shapes, offsets, and tile counts are correct, and plotted
-   values come from the data file unchanged.
+   values come from the data file unchanged. A figure without a source is
+   reported as unverifiable, not as wrong.
 
 ## Findings
 
@@ -117,7 +119,7 @@ answered:
 - any change to a fact, number, formula, citation, or code in the Chinese
   version: Perceval, on the changed sections;
 - any regenerated figure: Bedivere, on its new rendering, and Perceval when
-  its parameters or data changed.
+  its script, parameters, or data changed.
 
 Nearly every fix changes wording, so Bedivere runs in almost every round. State
 in the packet which sections changed.

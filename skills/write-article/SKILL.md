@@ -24,8 +24,12 @@ python3 -c 'import matplotlib'   # only for data figures
 
 If `rsvg-convert` is missing, stop and report that librsvg is required
 (`brew install librsvg` on macOS, `librsvg2-bin` on Debian or Ubuntu). If
-matplotlib is missing, stop and report that it is required
-(`python3 -m pip install --user matplotlib`). Do not fall back to a browser
+matplotlib is missing, stop and report that it is required: on a Python that
+allows user installs, such as the macOS system Python,
+`python3 -m pip install --user matplotlib`; on an externally managed Python
+(Homebrew, Debian 12, Ubuntu 24.04), the `python3-matplotlib` package or a
+virtual environment. With a virtual environment, run data-figure scripts with
+its `python`, and check matplotlib with that interpreter. Do not fall back to a browser
 renderer; it crashes under the agent sandbox. Writing without figures needs
 neither tool.
 
@@ -158,7 +162,7 @@ Update `Stage` in `brief.md` when the stage changes.
    starts only after approval.
 3. **Draft.** Read `style.md`, the matching section of `forms.md`, and
    `notation.md` if the article has math. Write into the target file. For each
-   figure, follow `figures.md`: write its source, generate the SVG, render it,
+   new or regenerated figure, follow `figures.md`: write its source, generate the SVG, render it,
    and look at it. Then run the pattern scan from `style.md` over the target
    and fix what it finds before any review.
 4. **Review.** Follow `review.md`. Bedivere reviews every complete draft;

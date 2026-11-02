@@ -1,7 +1,8 @@
 # Figures
 
-How to make, store, and check the figures of an article. Every figure is
-generated from a source file, rendered to PNG, and looked at before review.
+How to make, store, and check the figures of an article. Every figure this
+workflow creates is generated from a source file, rendered to PNG, and looked
+at before review.
 
 ## When a figure earns its place
 
@@ -24,15 +25,26 @@ launch a browser, which crashes under the agent sandbox.
 
 ## Sources and outputs
 
-- Each figure has one source in `.writing/<...>/<post>/figures/`: a script
-  `<name>.py`, plus `<name>.csv` for a data figure. Write the source first;
-  never hand-edit a generated SVG.
+- Each figure this workflow creates or regenerates has one source in
+  `.writing/<...>/<post>/figures/`: a script `<name>.py`, plus `<name>.csv`
+  for a data figure. Write the source first; never hand-edit a generated SVG.
+- Leave existing assets that have no source, such as screenshots and
+  third-party figures, as they are unless the user asks to redraw them. Record
+  where each came from in `brief.md`, with the credit or license for a
+  third-party figure, and report it in review as a figure whose content cannot
+  be verified from a source.
 - The script takes the output path as its only argument and writes
   `<name>.svg` where the article's renderer expects assets: the page bundle
   next to a Hugo post's `index.md`, or the directory the series records.
+- When the rendering target is LaTeX, also write `<name>.pdf` for
+  `\includegraphics`, which `pdflatex` needs because it cannot include SVG:
+  `rsvg-convert -f pdf -o <name>.pdf <name>.svg`. The SVG stays the generated
+  output, and checking still uses PNG.
 - Record each figure in `brief.md` under `## Figures`:
-  `<name> — source — output — section that refers to it`.
-- Run scripts with `python3 -B`, and set `MPLCONFIGDIR` to a private temporary
+  `<name> — source (or origin, for an existing asset) — output — section that
+  refers to it`.
+- Run scripts with `python3 -B`, or with the virtual environment's `python -B`
+  when matplotlib lives there, and set `MPLCONFIGDIR` to a private temporary
   directory for matplotlib; under the sandbox it cannot write `~/.matplotlib`.
   `Fontconfig error: No writable cache directories` is harmless.
 
@@ -71,8 +83,10 @@ fig.savefig(out, format="svg", metadata={"Date": None},
 - Read data only from the CSV next to the script; never type measured values
   into the script.
 - Label both axes with quantity and unit, e.g. `Throughput (TFLOP/s)`. Use a
-  log scale when values span more than two orders of magnitude, and say so in
-  the axis label.
+  log scale only when every value is positive and they span more than two
+  orders of magnitude, and say so in the axis label. With zero or negative
+  values, keep a linear axis, or use `symlog` and state its linear range in
+  the caption.
 - Name the hardware, dtype, and shape behind the data in the caption.
 
 ## Style
@@ -87,6 +101,10 @@ fig.savefig(out, format="svg", metadata={"Date": None},
   Default to the Okabe–Ito palette, which stays distinguishable under color
   blindness: `#0072B2` `#E69F00` `#009E73` `#D55E00` `#CC79A7` `#56B4E9`
   `#F0E442` `#000000`. Use gray for context that carries no meaning.
+- Yellow `#F0E442` and sky blue `#56B4E9` are too light for text or thin lines
+  on white: use them only as fills, with a dark outline.
+- Color is never the only distinction. Pair it with a direct label, a marker
+  shape, or a line style, so the figure reads in grayscale.
 - **White background**, set explicitly; a transparent figure turns black text
   invisible under a dark theme.
 - Text at least 12 px at the width the page displays the figure.
@@ -97,7 +115,9 @@ fig.savefig(out, format="svg", metadata={"Date": None},
 
 ## Checking
 
-Render every figure and look at it before review, and again after each change:
+Render every figure and look at it before review, and again after each
+change. An existing asset in a raster format can be opened with `read_image`
+directly.
 
 ```bash
 rsvg-convert -w 1200 -o /absolute/tmp/dir/<name>.png <path/to/name>.svg
