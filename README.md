@@ -125,7 +125,11 @@ reports, and talks. Git skills help prepare commits and maintain project ignore 
 DSH discovers skills installed in `~/.agents/skills/`. CUDA tooling and reference
 materials are not included. `llm-model-param-estimation` runs its scripts with
 Python 3.9 or later. `process-pdf` requires poppler (`brew install poppler`)
-and, for scanned PDFs, tesseract. Skills follow the active agent's permissions;
+and, for scanned PDFs, tesseract (`brew install tesseract`). `write-article`
+renders figures with librsvg (`brew install librsvg`) and draws data figures with
+matplotlib (`python3 -m pip install --user matplotlib` where user installs are
+allowed, otherwise `python3-matplotlib` or a virtual environment). Skills follow
+the active agent's permissions;
 Bedivere remains a static reviewer when using them.
 
 > Skills 覆盖 CUDA 编程，以及 CuTe C++ 和 CuTe DSL 的布局、张量、数据搬运、矩阵乘法和流水线。
@@ -133,7 +137,8 @@ Bedivere remains a static reviewer when using them.
 > PDF skill 用于读取、搜索、渲染、OCR、拆分和合并 PDF 文件。写作 skill 用于规划、撰写和审阅博客、技术报告与技术分享。Git skills 用于准备提交和维护项目忽略规则。
 > DSH 会发现安装在 `~/.agents/skills/` 下的技能；CUDA 工具和参考资料需另行准备。
 > `llm-model-param-estimation` 的脚本需要 Python 3.9 或更高版本。
-> `process-pdf` 需要 poppler（`brew install poppler`），处理扫描件还需要 tesseract。
+> `process-pdf` 需要 poppler（`brew install poppler`），处理扫描件还需要 tesseract（`brew install tesseract`）。
+> `write-article` 用 librsvg 渲染插图（`brew install librsvg`），画数据图还需要 matplotlib（允许用户级安装时用 `python3 -m pip install --user matplotlib`，否则用 `python3-matplotlib` 包或虚拟环境）。
 > 使用技能仍受当前 agent 的权限约束，Bedivere 始终只做静态审查。
 
 ## Choosing a preset

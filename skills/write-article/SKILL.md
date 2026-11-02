@@ -12,6 +12,26 @@ Perceval checks whether its content is correct. Working state lives in files so
 that a long session, a compacted context, or a new session can resume without
 relying on memory.
 
+## Preconditions
+
+Check a tool only before the operation that needs it, and stop that operation
+when the tool is missing:
+
+| Operation | Check | When missing, report |
+| --- | --- | --- |
+| Rendering an SVG, or making a PDF for LaTeX | `command -v rsvg-convert` | librsvg is required: `brew install librsvg` on macOS, `librsvg2-bin` on Debian or Ubuntu |
+| Generating a data figure | `python3 -c 'import matplotlib'`, with the interpreter that runs the script | matplotlib is required, see below |
+| Rendering an existing PDF figure | `command -v pdftoppm` | poppler is required: `brew install poppler` on macOS, `poppler-utils` on Debian or Ubuntu |
+
+Install matplotlib with `python3 -m pip install --user matplotlib` on a Python
+that allows user installs, such as the macOS system Python. On an externally
+managed Python (Homebrew, Debian 12, Ubuntu 24.04), use the
+`python3-matplotlib` package or a virtual environment, and run data-figure
+scripts with that environment's `python`.
+
+Do not fall back to a browser renderer; it crashes under the agent sandbox.
+Writing, and reviewing raster images, need none of these tools.
+
 ## References
 
 | File | Read when |
@@ -19,6 +39,7 @@ relying on memory.
 | `references/style.md` | Before drafting or revising, and by every reading reviewer |
 | `references/forms.md` | Before structuring or drafting; read the section for the form in the brief |
 | `references/notation.md` | Before writing or reviewing anything with math, symbols, or quantities with units |
+| `references/figures.md` | Before making, changing, or reviewing a figure |
 | `references/review.md` | Before requesting a review |
 
 Paths are relative to this skill's base directory.
@@ -30,7 +51,8 @@ Paths are relative to this skill's base directory.
 .writing/<series>/<post>/brief.md
 .writing/<series>/<post>/sources.md
 .writing/<series>/<post>/reviews.md
-.writing/<slug>/brief.md, sources.md, reviews.md   # a post outside any series
+.writing/<series>/<post>/figures/      # figure sources: scripts and data
+.writing/<slug>/brief.md, sources.md, reviews.md, figures/   # a post outside any series
 ```
 
 `.writing/` sits at the root of the repository that holds the article. Do not
@@ -39,9 +61,10 @@ article itself is the target file the user names; write the draft there and
 leave history to version control. Do not keep numbered draft copies.
 
 A post outside any series has no `series.md`. Its `brief.md` adds the
-`Language and tone`, `Rendering target`, `Terms`, and `Symbols` sections from
-the `series.md` template, and every step or reference that reads or updates
-`series.md` uses those sections of the brief instead.
+`Language and tone`, `Rendering target`, `Terms`, `Symbols`, and
+`Figure palette` sections from the `series.md` template, and every step or
+reference that reads or updates `series.md` uses those sections of the brief
+instead.
 
 `series.md`:
 
@@ -57,6 +80,8 @@ the `series.md` template, and every step or reference that reads or updates
 <中文 — English — note; one line each; both versions use exactly these>
 ## Symbols
 <symbol — meaning — shape or unit; one line each>
+## Figure palette
+<color — meaning; see references/figures.md>
 ## Posts
 <order, slug, target files, status, one-line purpose>
 ## Covered so far
@@ -83,6 +108,8 @@ Stage: discussion / outline / drafting / review / en-drafting / en-review / done
 <approved outline; mark it approved with the date>
 ## Decisions
 <decision — reason — date>
+## Figures
+<name — source — output — section that refers to it>
 ## Post-specific style rules
 <patterns the user rejected in this post>
 ```
@@ -133,9 +160,10 @@ Update `Stage` in `brief.md` when the stage changes.
    what the reader knows after it. Wait for the user to approve it; drafting
    starts only after approval.
 3. **Draft.** Read `style.md`, the matching section of `forms.md`, and
-   `notation.md` if the article has math. Write into the target file. Then run
-   the pattern scan from `style.md` over the target and fix what it finds
-   before any review.
+   `notation.md` if the article has math. Write into the target file. For each
+   new or regenerated figure, follow `figures.md`: write its source, generate the SVG, render it,
+   and look at it. Then run the pattern scan from `style.md` over the target
+   and fix what it finds before any review.
 4. **Review.** Follow `review.md`. Bedivere reviews every complete draft;
    Perceval runs in parallel when the article contains facts, numbers, or math
    that can be checked. Record each finding in `reviews.md`, then fix it or

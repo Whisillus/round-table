@@ -27,6 +27,10 @@ Every review task names:
   instruction not to raise them again unless the text changed;
 - for Bedivere, the pattern-scan hits that were kept and why;
 - for Perceval, the path of `sources.md`;
+- when the article has figures: for Bedivere, the rendered PNG of each figure
+  (reviewers may not generate files, so the lead agent renders them); for
+  Perceval, each figure's source script and its data file if it has one;
+  existing assets without a source are listed as such;
 - that the reviewer must not edit any file and returns findings as text.
 
 ## Reading review (Bedivere)
@@ -55,6 +59,15 @@ and `references/notation.md` if the article has math. Check, in this order:
    sections in the same order, and identical numbers, formulas, code, claims,
    and conclusions. Any difference in content is a finding; a difference in
    wording is not.
+8. **Figures.** Open each rendered PNG with `read_image`. For every figure,
+   check: one point, stated in the caption and referred to in the text;
+   labels, symbols, and numbers matching the text and `notation.md`;
+   overlapping, clipped, or illegible text. For a figure this workflow created
+   or regenerated, also check the Style rules of `references/figures.md`:
+   English-only text, palette meanings, contrast, and decoration. An existing
+   asset left unchanged, such as a screenshot, is exempt from those Style
+   rules. If `read_image` fails, say so in the findings instead of judging the
+   figures from their source.
 
 ## Content review (Perceval)
 
@@ -63,11 +76,15 @@ Read `references/notation.md` if the article has math. Check:
 1. **Facts and citations.** Each claim is supported by an authoritative source:
    official documentation, the paper, or upstream source code. Give the URL or
    path. Note version-dependent claims and which version the source states.
-2. **Numbers.** Recompute every derived figure from its stated inputs; a
+2. **Numbers.** Recompute every derived number from its stated inputs; a
    printing command such as `python3 -c` is allowed. Check units and orders of
    magnitude.
 3. **Math.** Each derivation step follows from the previous; shapes agree;
    stated complexities match the algorithm described.
+4. **Figures.** Read each figure's script and data: the parameters match the
+   text, the computed shapes, offsets, and tile counts are correct, and plotted
+   values come from the data file unchanged. A figure without a source is
+   reported as unverifiable, not as wrong.
 
 ## Findings
 
@@ -103,7 +120,9 @@ answered:
 
 - any change in wording: Bedivere, on the changed sections;
 - any change to a fact, number, formula, citation, or code in the Chinese
-  version: Perceval, on the changed sections.
+  version: Perceval, on the changed sections;
+- any regenerated figure: Bedivere, on its new rendering, and Perceval when
+  its script, parameters, or data changed.
 
 Nearly every fix changes wording, so Bedivere runs in almost every round. State
 in the packet which sections changed.

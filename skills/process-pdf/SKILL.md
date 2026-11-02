@@ -25,7 +25,7 @@ Check the tools before starting:
 command -v pdfinfo pdftotext pdftoppm
 ```
 
-If any is missing, stop and report that poppler is required (`brew install poppler` on macOS, `poppler-utils` on Debian or Ubuntu). Do not substitute Ghostscript `txtwrite`: it interleaves two-column pages line by line and drops word spaces. OCR additionally requires `tesseract`.
+If any is missing, stop and report that poppler is required (`brew install poppler` on macOS, `poppler-utils` on Debian or Ubuntu). Do not substitute Ghostscript `txtwrite`: it interleaves two-column pages line by line and drops word spaces. OCR additionally requires `tesseract`; if `command -v tesseract` finds nothing, stop and report it (`brew install tesseract` on macOS, `tesseract-ocr` on Debian or Ubuntu).
 
 Under a sandbox, poppler may print `Fontconfig error: No writable cache directories`. The message is harmless; output is unaffected.
 
