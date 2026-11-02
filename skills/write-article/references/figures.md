@@ -91,6 +91,9 @@ fig.savefig(out, format="svg", metadata={"Date": None},
 
 ## Style
 
+These rules apply to figures this workflow creates or regenerates. An existing
+asset left unchanged is checked only for content and legibility.
+
 - **English only** inside every SVG: labels, legends, axis titles, and
   annotations. Both language versions of the article share one figure. Use
   symbols and code identifiers as they appear in the text.
@@ -116,14 +119,15 @@ fig.savefig(out, format="svg", metadata={"Date": None},
 ## Checking
 
 Render every figure and look at it before review, and again after each
-change. An existing asset in a raster format can be opened with `read_image`
-directly.
+change:
 
 ```bash
 rsvg-convert -w 1200 -o /absolute/tmp/dir/<name>.png <path/to/name>.svg
+pdftoppm -png -r 150 -singlefile <path/to/name>.pdf /absolute/tmp/dir/<name>   # an existing PDF figure
 ```
 
-Then open the PNG with `read_image`. Check overlapping or clipped text, labels
+`pdftoppm` appends `.png` to the output prefix. An existing raster image
+(PNG, JPEG, WebP, GIF) needs no rendering. Then open the PNG with `read_image`. Check overlapping or clipped text, labels
 pointing at the wrong element, legibility at display size, and that every
 number and label matches the text. Keep the PNGs in the temporary directory
 until the review ends, then remove it.

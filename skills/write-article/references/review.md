@@ -59,12 +59,15 @@ and `references/notation.md` if the article has math. Check, in this order:
    sections in the same order, and identical numbers, formulas, code, claims,
    and conclusions. Any difference in content is a finding; a difference in
    wording is not.
-8. **Figures.** Open each rendered PNG with `read_image` and check it against
-   `references/figures.md`: one point per figure, stated in the caption and
-   referred to in the text; labels, symbols, and numbers matching the text and
-   `notation.md`; English-only text in the figure; palette meanings kept;
-   overlapping, clipped, or illegible text; decoration. If `read_image` fails,
-   say so in the findings instead of judging the figures from their source.
+8. **Figures.** Open each rendered PNG with `read_image`. For every figure,
+   check: one point, stated in the caption and referred to in the text;
+   labels, symbols, and numbers matching the text and `notation.md`;
+   overlapping, clipped, or illegible text. For a figure this workflow created
+   or regenerated, also check the Style rules of `references/figures.md`:
+   English-only text, palette meanings, contrast, and decoration. An existing
+   asset left unchanged, such as a screenshot, is exempt from those Style
+   rules. If `read_image` fails, say so in the findings instead of judging the
+   figures from their source.
 
 ## Content review (Perceval)
 

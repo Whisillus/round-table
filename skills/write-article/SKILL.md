@@ -14,24 +14,23 @@ relying on memory.
 
 ## Preconditions
 
-Figures need `rsvg-convert` to render SVG for checking, and data figures need
-matplotlib. Check before the first figure:
+Check a tool only before the operation that needs it, and stop that operation
+when the tool is missing:
 
-```bash
-command -v rsvg-convert
-python3 -c 'import matplotlib'   # only for data figures
-```
+| Operation | Check | When missing, report |
+| --- | --- | --- |
+| Rendering an SVG, or making a PDF for LaTeX | `command -v rsvg-convert` | librsvg is required: `brew install librsvg` on macOS, `librsvg2-bin` on Debian or Ubuntu |
+| Generating a data figure | `python3 -c 'import matplotlib'`, with the interpreter that runs the script | matplotlib is required, see below |
+| Rendering an existing PDF figure | `command -v pdftoppm` | poppler is required: `brew install poppler` on macOS, `poppler-utils` on Debian or Ubuntu |
 
-If `rsvg-convert` is missing, stop and report that librsvg is required
-(`brew install librsvg` on macOS, `librsvg2-bin` on Debian or Ubuntu). If
-matplotlib is missing, stop and report that it is required: on a Python that
-allows user installs, such as the macOS system Python,
-`python3 -m pip install --user matplotlib`; on an externally managed Python
-(Homebrew, Debian 12, Ubuntu 24.04), the `python3-matplotlib` package or a
-virtual environment. With a virtual environment, run data-figure scripts with
-its `python`, and check matplotlib with that interpreter. Do not fall back to a browser
-renderer; it crashes under the agent sandbox. Writing without figures needs
-neither tool.
+Install matplotlib with `python3 -m pip install --user matplotlib` on a Python
+that allows user installs, such as the macOS system Python. On an externally
+managed Python (Homebrew, Debian 12, Ubuntu 24.04), use the
+`python3-matplotlib` package or a virtual environment, and run data-figure
+scripts with that environment's `python`.
+
+Do not fall back to a browser renderer; it crashes under the agent sandbox.
+Writing, and reviewing raster images, need none of these tools.
 
 ## References
 
